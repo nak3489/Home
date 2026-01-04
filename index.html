@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="th" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Dashboard Hub - Vivid Edition</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'gradient-x': 'gradient-x 15s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        'gradient-x': {
+                            '0%, 100%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'left center'
+                            },
+                            '50%': {
+                                'background-size': '200% 200%',
+                                'background-position': 'right center'
+                            },
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+        }
+        
+        /* Animated Background Logic */
+        .vivid-bg {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient-15s ease infinite;
+        }
+
+        .dark .vivid-bg {
+            background: linear-gradient(-45deg, #1a1a2e, #16213e, #0f3460, #533483); 
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradient-15s {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass Panel Styles */
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        
+        .dark .glass-morphism {
+            background: rgba(15, 23, 42, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(25px);
+            border-left: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .dark .sidebar-glass {
+            background: rgba(15, 23, 42, 0.85);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(156, 163, 175, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(156, 163, 175, 0.8); }
+
+        .btn-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex flex-col relative vivid-bg text-slate-800 dark:text-white transition-colors duration-500">
+
+    <!-- Theme Toggle -->
+    <!-- แก้ไขปุ่มนี้: ให้พื้นหลังเป็นสีดำ (ในโหมดสว่าง) และสีขาว (ในโหมดมืด) -->
+    <button id="theme-toggle-btn" onclick="toggleTheme()" class="absolute top-5 right-5 z-50 p-3 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 cursor-pointer group bg-black text-white dark:bg-white dark:text-black border-2 border-white/20 dark:border-black/10">
+        <!-- ไอคอนเริ่มต้น -->
+        <i data-lucide="sun" class="w-5 h-5 group-hover:rotate-45 transition-transform duration-500"></i>
+    </button>
+
+    <!-- MAIN CONTENT WRAPPER (Split Screen Area) -->
+    <!-- ส่วนนี้จะขยายเต็มพื้นที่ที่เหลือ (flex-1) -->
+    <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative z-10">
+        
+        <!-- LEFT PANEL: Display Area -->
+        <main class="w-full md:w-1/2 md:shrink-0 md:basis-1/2 relative p-6 flex flex-col items-center justify-center overflow-hidden">
+            
+            <!-- Decoration Circles (เพิ่ม ID เพื่อให้เปลี่ยนสีได้) -->
+            <div id="decor-1" class="absolute top-10 left-10 w-32 h-32 bg-purple-500 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-float transition-colors duration-700"></div>
+            <div id="decor-2" class="absolute bottom-10 right-10 w-32 h-32 bg-blue-500 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-float transition-colors duration-700" style="animation-delay: 2s;"></div>
+
+            <!-- Main Card -->
+            <div class="relative z-10 w-full max-w-xl glass-morphism rounded-3xl p-10 text-center shadow-2xl transform transition-all duration-500 border-t border-white/50" id="display-card">
+                
+                <div id="display-icon-wrapper" class="relative inline-block mb-8">
+                    <div id="icon-glow" class="absolute inset-0 bg-blue-500 blur-2xl opacity-20 dark:opacity-40 rounded-full transition-colors duration-500"></div>
+                    <!-- แก้ไขคืนค่า: ให้ไอคอนใหญ่กลับมาเป็น Gradient สวยๆ เหมือนเดิม (ไม่ดำมืด/ขาวโพลนแล้ว) -->
+                    <div id="display-icon-container" class="relative z-10 p-8 rounded-full bg-gradient-to-br from-white to-slate-100 dark:from-slate-800 dark:to-slate-900 shadow-xl border border-white/20">
+                        <i id="display-icon" data-lucide="layout-grid" class="w-20 h-20 text-blue-500 transition-colors duration-300"></i>
+                    </div>
+                </div>
+
+                <!-- Title (จะถูกเปลี่ยนสี Gradient ผ่าน JS) -->
+                <h1 id="display-title" class="text-4xl md:text-5xl font-bold mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-slate-800 to-slate-600 dark:from-white dark:to-slate-300 transition-all duration-500">
+                    ยินดีต้อนรับ
+                </h1>
+
+                <div class="h-1 w-20 mx-auto rounded-full bg-gradient-to-r from-transparent via-slate-400 to-transparent opacity-50 mb-6"></div>
+
+                <p id="display-desc" class="text-slate-600 dark:text-slate-300 text-lg md:text-xl font-light leading-relaxed">
+                    เลือกเมนูทางด้านขวาเพื่อเข้าใช้งานระบบ
+                </p>
+            </div>
+        </main>
+
+        <!-- RIGHT PANEL: Sidebar Menu -->
+        <aside class="w-full md:w-1/2 sidebar-glass flex flex-col z-20 shadow-[0_0_50px_rgba(0,0,0,0.1)]">
+            
+            <!-- Header -->
+            <div class="p-6 border-b border-slate-200/50 dark:border-slate-700/50">
+                <h2 class="text-2xl font-bold flex items-center gap-3 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
+                    <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                        <i data-lucide="grid" class="w-6 h-6 text-blue-600 dark:text-blue-400"></i>
+                    </div>
+                    <!-- แก้ไขข้อความตรงนี้: (Quick Links) เป็นสีแดง -->
+                    <span>อีสาน4 <span class="text-lg text-red-600 dark:text-red-500">(Quick Links)</span></span>
+                </h2>
+            </div>
+
+            <!-- Buttons Grid -->
+            <!-- แก้ไข: เปลี่ยน gap-4 เป็น gap-3 เพื่อให้ปุ่มชิดกันมากขึ้น -->
+            <div class="flex-1 overflow-y-auto p-6 grid grid-cols-2 gap-3 content-start" id="buttons-container">
+                <!-- JS Will Inject Buttons Here -->
+            </div>
+        </aside>
+    </div>
+
+    <!-- UNIFIED FOOTER BAR (ด้านล่างสุด ยาวเต็มจอ) -->
+    <!-- รวม Credit และ IP ไว้ในแถบเดียวกัน เพื่อให้เส้นและระนาบเท่ากันเป๊ะ -->
+    <footer class="w-full p-3 px-6 border-t border-white/40 dark:border-white/10 bg-white/30 dark:bg-slate-900/30 backdrop-blur-md flex justify-center items-center gap-4 z-50 shrink-0">
+        <!-- Credit -->
+        <div class="text-xs font-medium tracking-wider uppercase text-slate-500 dark:text-slate-400">
+            © 2025 ADMIN OK
+        </div>
+
+        <!-- เส้นคั่นแนวตั้ง (Vertical Divider) -->
+        <div class="h-4 w-px bg-slate-400/30 dark:bg-white/20"></div>
+
+        <!-- IP Display -->
+        <div id="ip-display" class="flex items-center gap-2 text-xs font-mono text-slate-500 dark:text-slate-400 bg-white/50 dark:bg-black/20 p-2 rounded-lg">
+            <i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i>
+            <span>Checking...</span>
+        </div>
+    </footer>
+
+    <script>
+        // ==========================================
+        // 1. Theme Logic
+        // ==========================================
+        const html = document.documentElement;
+        // เปลี่ยนการอ้างอิงจากตัวไอคอน เป็นตัวปุ่มแทน เพื่อให้เปลี่ยนไส้ในได้
+        const themeBtn = document.getElementById('theme-toggle-btn');
+
+        function initTheme() {
+            // ตรวจสอบค่าเริ่มต้น
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                html.classList.add('dark');
+                updateThemeIcon(true); // เซ็ตไอคอนเป็นโหมดมืด
+            } else {
+                html.classList.remove('dark');
+                updateThemeIcon(false); // เซ็ตไอคอนเป็นโหมดสว่าง
+            }
+        }
+        
+        function toggleTheme() {
+            html.classList.toggle('dark');
+            const isDark = html.classList.contains('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+            
+            updateThemeIcon(isDark); // อัปเดตไอคอน
+            renderButtons();
+        }
+
+        // ฟังก์ชันอัปเดตไอคอนโดยเฉพาะ
+        function updateThemeIcon(isDark) {
+            const iconName = isDark ? 'sun' : 'moon';
+            
+            // สีไอคอน: ตัดกับสีพื้นหลังปุ่ม (พื้นขาว->ไอคอนดำ / พื้นดำ->ไอคอนขาว/เหลือง)
+            const iconColor = isDark ? 'text-black' : 'text-white'; // หรือจะใช้สีเหลือง text-yellow-400 ก็ได้ถ้าชอบ
+            
+            // อัปเดต HTML ของปุ่ม (พื้นหลังถูกจัดการด้วย Class ที่ตัว Button แล้ว)
+            themeBtn.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5 ${iconColor} group-hover:rotate-45 transition-transform duration-500"></i>`;
+            
+            lucide.createIcons();
+        }
+
+        initTheme();
+
+        // ==========================================
+        // 2. IP Logic
+        // ==========================================
+        async function getUserIP() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                document.getElementById('ip-display').innerHTML = `
+                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="opacity-70">IP:</span>
+                    <span class="font-bold text-slate-700 dark:text-slate-200">${data.ip}</span>
+                `;
+            } catch (e) {
+                document.getElementById('ip-display').innerHTML = `<span class="text-red-400">Offline</span>`;
+            }
+        }
+        getUserIP();
+
+        // =========================================================================
+        //  🔥🔥🔥 โซนแก้ไขลิงก์และข้อมูลปุ่ม (EDIT HERE) 🔥🔥🔥
+        //  แก้ที่บรรทัดด้านล่างนี้ได้เลยครับ
+        // =========================================================================
+        const linksData = [
+            { 
+                id: 1, 
+                title: "สัญญาเช่าตึก",       // <-- ชื่อปุ่มตัวใหญ่
+                sub: "ตรวจสอบ อัปเดทสัญญาเช่า",  // <-- คำอธิบายตัวเล็ก
+                icon: "home",           // <-- ชื่อไอคอน (ดูชื่อจาก lucide.dev)
+                color: "blue",          // <-- สีธีม (blue, red, green, etc.)
+                url: "https://nak3489.github.io/Contract-Management-V1/" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$ (เช่น "https://www.google.com")
+            },
+            { 
+                id: 2, 
+                title: "เบลล์ เบนซิน", 
+                sub: "Coming soon", 
+                icon: "search", 
+                color: "red", 
+                url: "https://www.google.com" // <--- ตัวอย่างการใส่ลิงก์
+            },
+            { 
+                id: 3, 
+                title: "Stock รถยึด", 
+                sub: "ตรจสอบรถยึด และอัปเดทสถานะ โยกย้าย", 
+                icon: "motorbike", 
+                color: "indigo", 
+                url: "#" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 4, 
+                title: "หิน ดีเซล", 
+                sub: "Coming soon", 
+                icon: "youtube", 
+                color: "rose", 
+                url: "https://www.youtube.com" // <--- ตัวอย่างการใส่ลิงก์
+            },
+            { 
+                id: 5, 
+                title: "ฝากบ้านกับตำรวจ", 
+                sub: "ลิงค์สำหรับส่งรายงาน ฝากบ้านกับตำรวจ", 
+                icon: "siren", 
+                color: "amber", 
+                url: "https://script.google.com/a/macros/srisawadpower.com/s/AKfycbxUTRA64ITtD6-wnl7TQiU69v-pxUMBoYp7XNwizLn5KXfCXJpo682kh8VqE4rDDYq_/exec" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 6, 
+                title: "Coming soon", 
+                sub: "Coming soon", 
+                icon: "pie-chart", 
+                color: "emerald", 
+                url: "#" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 7, 
+                title: "ระบบบันทึกการขายประกัน", 
+                sub: "(ISMS)ระบบบันทึกการขายประกัน ของสาขา", 
+                icon: "shield-plus", 
+                color: "purple", 
+                url: "https://nak3489.github.io/ISMS//" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 8, 
+                title: "Coming soon", 
+                sub: "Coming soon", 
+                icon: "settings", 
+                color: "slate", 
+                url: "#" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 9, 
+                title: "ตรวจสาขา (ตัวทดสอบ)", 
+                sub: "ตรวจสอบการทำงานสาขา", 
+                icon: "map-pin-check", 
+                color: "cyan", 
+                url: "https://nak3489.github.io/UAT-Audit-System/" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 10, 
+                title: "Coming soon", 
+                sub: "Coming soon", 
+                icon: "message-circle", 
+                color: "violet", 
+                url: "#" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 11, 
+                title: "Coming soon", 
+                sub: "Coming soon", 
+                icon: "life-buoy", 
+                color: "orange", 
+                url: "#" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+            { 
+                id: 12, 
+                title: "Coming soon", 
+                sub: "Coming soon", 
+                icon: "log-out", 
+                color: "gray", 
+                url: "#" // <--- $$$ ใส่ลิงก์เว็บตรงนี้ $$$
+            },
+        ];
+
+        // =========================================================================
+        //  จบโซนแก้ไข (ข้างล่างนี้ไม่ต้องแก้ครับ)
+        // =========================================================================
+
+        const container = document.getElementById('buttons-container');
+        const displayCard = document.getElementById('display-card');
+        const displayTitle = document.getElementById('display-title');
+        const displayDesc = document.getElementById('display-desc');
+        // displayIcon ไม่ต้องใช้ตัวแปร global แล้วเพราะเราจะสร้างใหม่ทุกครั้ง
+        const displayIconContainer = document.getElementById('display-icon-container');
+        const iconGlow = document.getElementById('icon-glow');
+        const decor1 = document.getElementById('decor-1');
+        const decor2 = document.getElementById('decor-2');
+
+        // Map color names to Tailwind classes
+        const colorMap = {
+            blue:   { text: 'text-blue-500',   bg: 'bg-blue-500',   hoverBorder: 'hover:border-blue-400',   lightBg: 'bg-blue-50' },
+            red:    { text: 'text-red-500',    bg: 'bg-red-500',    hoverBorder: 'hover:border-red-400',    lightBg: 'bg-red-50' },
+            indigo: { text: 'text-indigo-500', bg: 'bg-indigo-500', hoverBorder: 'hover:border-indigo-400', lightBg: 'bg-indigo-50' },
+            rose:   { text: 'text-rose-500',   bg: 'bg-rose-500',   hoverBorder: 'hover:border-rose-400',   lightBg: 'bg-rose-50' },
+            amber:  { text: 'text-amber-500',  bg: 'bg-amber-500',  hoverBorder: 'hover:border-amber-400',  lightBg: 'bg-amber-50' },
+            emerald:{ text: 'text-emerald-500',bg: 'bg-emerald-500',hoverBorder: 'hover:border-emerald-400',lightBg: 'bg-emerald-50' },
+            purple: { text: 'text-purple-500', bg: 'bg-purple-500', hoverBorder: 'hover:border-purple-400', lightBg: 'bg-purple-50' },
+            slate:  { text: 'text-slate-500',  bg: 'bg-slate-500',  hoverBorder: 'hover:border-slate-400',  lightBg: 'bg-slate-50' },
+            cyan:   { text: 'text-cyan-500',   bg: 'bg-cyan-500',   hoverBorder: 'hover:border-cyan-400',   lightBg: 'bg-cyan-50' },
+            violet: { text: 'text-violet-500', bg: 'bg-violet-500', hoverBorder: 'hover:border-violet-400', lightBg: 'bg-violet-50' },
+            orange: { text: 'text-orange-500', bg: 'bg-orange-500', hoverBorder: 'hover:border-orange-400', lightBg: 'bg-orange-50' },
+            gray:   { text: 'text-gray-500',   bg: 'bg-gray-500',   hoverBorder: 'hover:border-gray-400',   lightBg: 'bg-gray-50' },
+        };
+
+        function renderButtons() {
+            container.innerHTML = '';
+            linksData.forEach(item => {
+                const colors = colorMap[item.color] || colorMap.blue;
+                
+                const a = document.createElement('a');
+                a.href = item.url;
+                
+                // แก้ไขตรงนี้: เปลี่ยน h-[5.5rem] เป็น h-20 (ลดความสูงลงอีก)
+                a.className = `
+                    btn-card relative group flex items-center p-3 rounded-2xl border 
+                    bg-white/50 dark:bg-slate-800/40 
+                    border-slate-200 dark:border-slate-700 
+                    ${colors.hoverBorder} hover:bg-white dark:hover:bg-slate-800
+                    cursor-pointer no-underline overflow-hidden h-20 w-full
+                `;
+
+                a.innerHTML = `
+                    <!-- Colored glow on hover -->
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-10 bg-gradient-to-r from-transparent via-${item.color}-500 to-transparent transition-opacity duration-300"></div>
+                    
+                    <!-- Icon Box -->
+                    <div class="relative w-12 h-12 flex items-center justify-center rounded-xl 
+                        ${colors.lightBg} dark:bg-slate-700 
+                        group-hover:${colors.bg} group-hover:text-white 
+                        ${colors.text} dark:text-slate-300
+                        transition-all duration-300 shadow-sm shrink-0">
+                        <i data-lucide="${item.icon}" class="w-6 h-6 transform group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    
+                    <!-- Text Info -->
+                    <div class="ml-4 flex-1 overflow-hidden z-10">
+                        <h3 class="font-bold text-sm text-slate-700 dark:text-slate-200 truncate group-hover:text-${item.color}-600 dark:group-hover:text-${item.color}-400 transition-colors">
+                            ${item.title}
+                        </h3>
+                        <p class="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-medium truncate">
+                            ${item.sub}
+                        </p>
+                    </div>
+                `;
+
+                a.addEventListener('mouseenter', () => updateDisplay(item));
+                container.appendChild(a);
+            });
+            lucide.createIcons();
+        }
+
+        function updateDisplay(item) {
+            const colors = colorMap[item.color] || colorMap.blue;
+            const colorName = item.color; // เก็บชื่อสีไว้ใช้สร้าง Class
+            
+            // Animation Out
+            displayCard.classList.add('scale-95', 'opacity-80', 'blur-sm');
+            
+            setTimeout(() => {
+                // Update Data
+                displayTitle.innerText = item.title;
+                displayDesc.innerText = `${item.title} - ${item.sub}`; 
+                
+                // 1. Update Icon (สำคัญ: สร้าง HTML ใหม่ลงไปเลย เพื่อแก้ปัญหาไอคอนไม่เปลี่ยน)
+                displayIconContainer.innerHTML = `<i data-lucide="${item.icon}" class="w-20 h-20 transition-colors duration-300 ${colors.text}"></i>`;
+                
+                // 2. Update Icon Container (กรอบไอคอน)
+                // แก้ไขคืนค่า: กลับมาใช้ Gradient สวยงาม และขอบสีจางๆ
+                displayIconContainer.className = `relative z-10 p-8 rounded-full bg-gradient-to-br from-white to-slate-100 dark:from-slate-800 dark:to-slate-900 shadow-xl border border-${colorName}-500/50 transition-all duration-500`;
+
+                // 3. Update Icon Glow (แสงฟุ้งหลังไอคอน)
+                iconGlow.className = `absolute inset-0 blur-2xl opacity-20 dark:opacity-40 rounded-full transition-colors duration-500 ${colors.bg}`;
+
+                // 4. Update Title Gradient (เปลี่ยนสีข้อความหัวข้อตามสีปุ่ม)
+                displayTitle.className = `text-4xl md:text-5xl font-bold mb-3 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-${colorName}-600 to-${colorName}-400 dark:from-${colorName}-400 dark:to-white transition-all duration-500`;
+
+                // 5. Update Background Decor Circles (เปลี่ยนสีวงกลมพื้นหลัง)
+                if(decor1) decor1.className = `absolute top-10 left-10 w-32 h-32 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-float transition-colors duration-700 bg-${colorName}-500`;
+                if(decor2) decor2.className = `absolute bottom-10 right-10 w-32 h-32 rounded-full mix-blend-multiply filter blur-2xl opacity-30 animate-float transition-colors duration-700 bg-${colorName}-500`;
+
+                // สั่งให้ Lucide แปลง <i> เป็น <svg> อีกครั้ง
+                lucide.createIcons();
+                
+                // Animation In
+                displayCard.classList.remove('scale-95', 'opacity-80', 'blur-sm');
+            }, 150);
+        }
+
+        renderButtons();
+        updateDisplay(linksData[0]);
+
+    </script>
+</body>
+</html>
