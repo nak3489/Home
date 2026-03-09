@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SAN4 Home</title>
     <style>
         body, html { 
@@ -14,9 +14,11 @@
             background-color: #f3f4f6;
         }
         .iframe-container {
+            position: absolute;
+            top: -36px; /* ดึงขึ้นไปซ่อนแถบแจ้งเตือนของ Google */
+            left: 0;
             width: 100%;
-            margin-top: 0px; 
-            height: calc(100% + 36px); 
+            height: calc(100% + 36px); /* บวกความสูงชดเชย เพื่อดึงแถบเมนูด้านล่างให้กลับมาพอดีจอ */
         }
         iframe { 
             width: 100%; 
@@ -30,5 +32,4 @@
         <iframe src="https://script.google.com/macros/s/AKfycbyjpcoE4hBYGK2h0-lcM8BRTVJXYYiXszWlVYGFYCWVT0eQjhsS33rE69tlkpqOzI6-Jw/exec"></iframe>
     </div>
 </body>
-
 </html>
